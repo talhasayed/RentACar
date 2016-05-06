@@ -14,10 +14,21 @@ namespace RentACarWeb.EF
     
     public partial class Car
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Car()
+        {
+            this.RentOrderDetails = new HashSet<RentOrderDetail>();
+        }
+    
         public System.Guid Id { get; set; }
-        public System.Guid CarModelId { get; set; }
+        public string BrandName { get; set; }
+        public string ModelName { get; set; }
+        public string CarType { get; set; }
+        public int ModelYear { get; set; }
+        public int PersonCapacity { get; set; }
         public string Color { get; set; }
     
-        public virtual CarModel CarModel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RentOrderDetail> RentOrderDetails { get; set; }
     }
 }

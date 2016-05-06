@@ -25,7 +25,8 @@ namespace RentACarWeb.EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<CarModel> CarModels { get; set; }
+        public virtual DbSet<RentOrder> RentOrders { get; set; }
+        public virtual DbSet<RentOrderDetail> RentOrderDetails { get; set; }
         public virtual DbSet<Car> Cars { get; set; }
     }
 }

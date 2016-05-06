@@ -12,22 +12,23 @@ namespace RentACarWeb.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class CarModel
+    public partial class RentOrder
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CarModel()
+        public RentOrder()
         {
-            this.Cars = new HashSet<Car>();
+            this.RentOrderDetails = new HashSet<RentOrderDetail>();
         }
     
         public System.Guid Id { get; set; }
-        public string CompanyName { get; set; }
-        public string ModelName { get; set; }
-        public int ModelYear { get; set; }
-        public int PassengerCapacity { get; set; }
-        public string VehicleType { get; set; }
+        public System.DateTime TransactionDate { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerNationality { get; set; }
+        public string CustomerDrivingLicenseNo { get; set; }
+        public Nullable<int> PreferredCurrency { get; set; }
+        public string AdvancePayment { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Car> Cars { get; set; }
+        public virtual ICollection<RentOrderDetail> RentOrderDetails { get; set; }
     }
 }

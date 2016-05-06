@@ -360,9 +360,6 @@
     <Compile Include="EF\Car.cs">
       <DependentUpon>RentalDBContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\CarModel.cs">
-      <DependentUpon>RentalDBContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\RentalDBContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -377,6 +374,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RentalDBContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RentOrder.cs">
+      <DependentUpon>RentalDBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RentOrderDetail.cs">
+      <DependentUpon>RentalDBContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

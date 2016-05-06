@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -23,6 +24,32 @@ namespace RentACarWeb.App
                 lstCars.DataSource = cars;
                 lstCars.DataBind();
             }
+        }
+
+        protected void lnkSelect_OnCommand(object sender, CommandEventArgs e)
+        {
+            var currentCarId = Guid.Parse(e.CommandArgument.ToString());
+
+            if (Session["CurrentOrder"] == null)
+            {
+                Session["CurrentOrder"] = new List<Guid>();
+            }
+
+            var currentOrder = (List<Guid>)Session["CurrentOrder"];
+
+            if (!currentOrder.Contains(currentCarId))
+            {
+                currentOrder.Add(currentCarId);
+
+                lblMessage.Text = string.Format("Car with Id:{0} was added to the order", currentCarId);
+            }
+            else
+            {
+                currentOrder.Remove(currentCarId);
+
+                lblMessage.Text = string.Format("Car with Id:{0} was removed from the order", currentCarId);
+            }
+
         }
     }
 }

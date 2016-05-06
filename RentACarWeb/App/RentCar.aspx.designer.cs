@@ -13,6 +13,15 @@ namespace RentACarWeb.App {
     public partial class RentCar {
         
         /// <summary>
+        /// lblMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessage;
+        
+        /// <summary>
         /// lstCars control.
         /// </summary>
         /// <remarks>
@@ -20,5 +29,14 @@ namespace RentACarWeb.App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListView lstCars;
+        
+        /// <summary>
+        /// lnkFinalizeOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkFinalizeOrder;
     }
 }

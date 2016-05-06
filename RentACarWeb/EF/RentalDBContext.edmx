@@ -4,116 +4,200 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RentACarWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="CarModel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="CompanyName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ModelName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="ModelYear" Type="int" Nullable="false" />
-          <Property Name="PassengerCapacity" Type="int" Nullable="false" />
-          <Property Name="VehicleType" Type="nvarchar" MaxLength="100" Nullable="false" />
-        </EntityType>
+    <Schema Namespace="RentACarWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cars">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="CarModelId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Color" Type="nvarchar" MaxLength="100" />
+          <Property Name="BrandName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CarType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ModelYear" Type="int" Nullable="false" />
+          <Property Name="PersonCapacity" Type="int" Nullable="false" />
+          <Property Name="Color" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Cars_CarModel">
-          <End Role="CarModel" Type="Self.CarModel" Multiplicity="1" />
-          <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
+        <EntityType Name="RentOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransactionDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerNationality" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="CustomerDrivingLicenseNo" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="PreferredCurrency" Type="int" />
+          <Property Name="AdvancePayment" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="RentOrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RentOrderId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CarId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="RentDurationFrom" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="RentDurationTo" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_RentOrderDetail_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="RentOrderDetail" Type="Self.RentOrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CarModel">
+            <Principal Role="Cars">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Cars">
-              <PropertyRef Name="CarModelId" />
+            <Dependent Role="RentOrderDetail">
+              <PropertyRef Name="CarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RentOrderDetail_RentOrder">
+          <End Role="RentOrder" Type="Self.RentOrder" Multiplicity="1" />
+          <End Role="RentOrderDetail" Type="Self.RentOrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentOrder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentOrderDetail">
+              <PropertyRef Name="RentOrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RentACarWebModelStoreContainer">
-          <EntitySet Name="CarModel" EntityType="Self.CarModel" Schema="Rental" store:Type="Tables" />
           <EntitySet Name="Cars" EntityType="Self.Cars" Schema="Rental" store:Type="Tables" />
-          <AssociationSet Name="FK_Cars_CarModel" Association="Self.FK_Cars_CarModel">
-            <End Role="CarModel" EntitySet="CarModel" />
+          <EntitySet Name="RentOrder" EntityType="Self.RentOrder" Schema="Rental" store:Type="Tables" />
+          <EntitySet Name="RentOrderDetail" EntityType="Self.RentOrderDetail" Schema="Rental" store:Type="Tables" />
+          <AssociationSet Name="FK_RentOrderDetail_Cars" Association="Self.FK_RentOrderDetail_Cars">
             <End Role="Cars" EntitySet="Cars" />
+            <End Role="RentOrderDetail" EntitySet="RentOrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RentOrderDetail_RentOrder" Association="Self.FK_RentOrderDetail_RentOrder">
+            <End Role="RentOrder" EntitySet="RentOrder" />
+            <End Role="RentOrderDetail" EntitySet="RentOrderDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RentACarWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="CarModel">
+        <EntityContainer Name="RentalDBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="RentOrders" EntityType="RentACarWebModel.RentOrder" />
+          <EntitySet Name="RentOrderDetails" EntityType="RentACarWebModel.RentOrderDetail" />
+          <AssociationSet Name="FK_RentOrderDetail_RentOrder" Association="RentACarWebModel.FK_RentOrderDetail_RentOrder">
+            <End Role="RentOrder" EntitySet="RentOrders" />
+            <End Role="RentOrderDetail" EntitySet="RentOrderDetails" />
+          </AssociationSet>
+          <EntitySet Name="Cars" EntityType="RentACarWebModel.Car" />
+          <AssociationSet Name="FK_RentOrderDetail_Cars" Association="RentACarWebModel.FK_RentOrderDetail_Cars">
+            <End Role="Car" EntitySet="Cars" />
+            <End Role="RentOrderDetail" EntitySet="RentOrderDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="RentOrder">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ModelName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ModelYear" Type="Int32" Nullable="false" />
-          <Property Name="PassengerCapacity" Type="Int32" Nullable="false" />
-          <Property Name="VehicleType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Cars" Relationship="Self.FK_Cars_CarModel" FromRole="CarModel" ToRole="Cars" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerNationality" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="CustomerDrivingLicenseNo" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="PreferredCurrency" Type="Int32" />
+          <Property Name="AdvancePayment" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="RentOrderDetails" Relationship="RentACarWebModel.FK_RentOrderDetail_RentOrder" FromRole="RentOrder" ToRole="RentOrderDetail" />
         </EntityType>
+        <EntityType Name="RentOrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="RentOrderId" Type="Guid" Nullable="false" />
+          <Property Name="CarId" Type="Guid" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="RentDurationFrom" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="RentDurationTo" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="RentOrder" Relationship="RentACarWebModel.FK_RentOrderDetail_RentOrder" FromRole="RentOrderDetail" ToRole="RentOrder" />
+          <NavigationProperty Name="Car" Relationship="RentACarWebModel.FK_RentOrderDetail_Cars" FromRole="RentOrderDetail" ToRole="Car" />
+        </EntityType>
+        <Association Name="FK_RentOrderDetail_RentOrder">
+          <End Type="RentACarWebModel.RentOrder" Role="RentOrder" Multiplicity="1" />
+          <End Type="RentACarWebModel.RentOrderDetail" Role="RentOrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentOrder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentOrderDetail">
+              <PropertyRef Name="RentOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Car">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="CarModelId" Type="Guid" Nullable="false" />
-          <Property Name="Color" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CarModel" Relationship="Self.FK_Cars_CarModel" FromRole="Cars" ToRole="CarModel" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CarType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModelYear" Type="Int32" Nullable="false" />
+          <Property Name="PersonCapacity" Type="Int32" Nullable="false" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RentOrderDetails" Relationship="RentACarWebModel.FK_RentOrderDetail_Cars" FromRole="Car" ToRole="RentOrderDetail" />
         </EntityType>
-        <Association Name="FK_Cars_CarModel">
-          <End Role="CarModel" Type="Self.CarModel" Multiplicity="1" />
-          <End Role="Cars" Type="Self.Car" Multiplicity="*" />
+        <Association Name="FK_RentOrderDetail_Cars">
+          <End Type="RentACarWebModel.Car" Role="Car" Multiplicity="1" />
+          <End Type="RentACarWebModel.RentOrderDetail" Role="RentOrderDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CarModel">
+            <Principal Role="Car">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Cars">
-              <PropertyRef Name="CarModelId" />
+            <Dependent Role="RentOrderDetail">
+              <PropertyRef Name="CarId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="RentalDBContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CarModels" EntityType="Self.CarModel" />
-          <EntitySet Name="Cars" EntityType="Self.Car" />
-          <AssociationSet Name="FK_Cars_CarModel" Association="Self.FK_Cars_CarModel">
-            <End Role="CarModel" EntitySet="CarModels" />
-            <End Role="Cars" EntitySet="Cars" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RentACarWebModelStoreContainer" CdmEntityContainer="RentalDBContext">
-          <EntitySetMapping Name="CarModels">
-            <EntityTypeMapping TypeName="RentACarWebModel.CarModel">
-              <MappingFragment StoreEntitySet="CarModel">
+          <EntitySetMapping Name="RentOrders">
+            <EntityTypeMapping TypeName="RentACarWebModel.RentOrder">
+              <MappingFragment StoreEntitySet="RentOrder">
+                <ScalarProperty Name="AdvancePayment" ColumnName="AdvancePayment" />
+                <ScalarProperty Name="PreferredCurrency" ColumnName="PreferredCurrency" />
+                <ScalarProperty Name="CustomerDrivingLicenseNo" ColumnName="CustomerDrivingLicenseNo" />
+                <ScalarProperty Name="CustomerNationality" ColumnName="CustomerNationality" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
-                <ScalarProperty Name="ModelYear" ColumnName="ModelYear" />
-                <ScalarProperty Name="PassengerCapacity" ColumnName="PassengerCapacity" />
-                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentOrderDetails">
+            <EntityTypeMapping TypeName="RentACarWebModel.RentOrderDetail">
+              <MappingFragment StoreEntitySet="RentOrderDetail">
+                <ScalarProperty Name="RentDurationTo" ColumnName="RentDurationTo" />
+                <ScalarProperty Name="RentDurationFrom" ColumnName="RentDurationFrom" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CarId" ColumnName="CarId" />
+                <ScalarProperty Name="RentOrderId" ColumnName="RentOrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cars">
             <EntityTypeMapping TypeName="RentACarWebModel.Car">
               <MappingFragment StoreEntitySet="Cars">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CarModelId" ColumnName="CarModelId" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="PersonCapacity" ColumnName="PersonCapacity" />
+                <ScalarProperty Name="ModelYear" ColumnName="ModelYear" />
+                <ScalarProperty Name="CarType" ColumnName="CarType" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
