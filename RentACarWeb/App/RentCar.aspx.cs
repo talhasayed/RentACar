@@ -28,28 +28,36 @@ namespace RentACarWeb.App
 
         protected void lnkSelect_OnCommand(object sender, CommandEventArgs e)
         {
-            var currentCarId = Guid.Parse(e.CommandArgument.ToString());
-
-            if (Session["CurrentOrder"] == null)
+            using (var ctx = new RentalDBContext())
             {
-                Session["CurrentOrder"] = new List<Guid>();
+
+                var currentCarId = Guid.Parse(e.CommandArgument.ToString());
+
+                if (Session["CurrentOrder"] == null)
+                {
+                    Session["CurrentOrder"] = new List<RentOrderDetail>();
+                }
+
+                var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
+
+                if (currentOrder.All(x => x.CarId != currentCarId))
+                {
+                    currentOrder.Add(new RentOrderDetail() {CarId = currentCarId, Car = ctx.Cars.Single(x=> x.Id == currentCarId)});
+
+                    lblMessage.Text = string.Format("Car with Id:{0} was added to the order", currentCarId);
+                }
+                else
+                {
+                    var currentCarItem = currentOrder.Single(x => x.CarId == currentCarId);
+
+                    currentOrder.Remove(currentCarItem);
+
+                    lblMessage.Text = string.Format("Car with Id:{0} was removed from the order", currentCarId);
+                }
             }
-
-            var currentOrder = (List<Guid>)Session["CurrentOrder"];
-
-            if (!currentOrder.Contains(currentCarId))
-            {
-                currentOrder.Add(currentCarId);
-
-                lblMessage.Text = string.Format("Car with Id:{0} was added to the order", currentCarId);
-            }
-            else
-            {
-                currentOrder.Remove(currentCarId);
-
-                lblMessage.Text = string.Format("Car with Id:{0} was removed from the order", currentCarId);
-            }
-
         }
+
+
+
     }
 }

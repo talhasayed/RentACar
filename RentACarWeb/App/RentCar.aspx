@@ -15,8 +15,9 @@
                     Brand: <%# Eval("BrandName") %>
                     Model: <%# Eval("ModelName") %>
                     Car Type: <%# Eval("CarType") %>
-                </li>
                 <asp:LinkButton ID="lnkSelect" runat="server" CommandName="SelectCar" CommandArgument='<%# Eval("Id") %>' OnCommand="lnkSelect_OnCommand">Select</asp:LinkButton>
+
+                </li>
 
             </ItemTemplate>
         </asp:ListView>
@@ -25,7 +26,7 @@
     </ul>
     
     
-    <asp:HyperLink ID="lnkFinalizeOrder" runat="server">Finalize Order</asp:HyperLink>
+    <asp:HyperLink ID="lnkFinalizeOrder" NavigateUrl="FinalizeOrder.aspx" runat="server">Finalize Order</asp:HyperLink>
     
 
 </asp:Content>
