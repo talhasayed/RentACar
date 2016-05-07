@@ -119,9 +119,10 @@ namespace RentACarWeb.App
                 ctx.SaveChanges();
                 lblMessage.Text = "Order successfully saved";
                 lblMessage.CssClass = "isa_success";
-                ClearForm();
 
                 Session.Remove("CurrentOrder");
+                ClearForm();
+
             }
         }
 
