@@ -46,11 +46,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">RentACar</a>
+                    <a class="navbar-brand" runat="server" href="~/">RentACar!</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/App/RentCar">Search and Rent</a></li>
+                        <li><a runat="server" href="~/App/FinalizeOrder">FinalizeOrder</a></li>
                     </ul>
                     
                 </div>

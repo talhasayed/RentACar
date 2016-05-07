@@ -36,9 +36,14 @@ namespace RentACarWeb.App
 
         protected void btnConfirmOrder_OnClick(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+            {
+                return;
+            }
+
             using (var ctx = new RentalDBContext())
             {
-                var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+                var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
                 var order = new RentOrder()
                 {
                     Id = Guid.NewGuid(),
@@ -63,26 +68,23 @@ namespace RentACarWeb.App
                     });
                 }
 
-
-
                 ctx.RentOrders.Add(order);
-
-
-
-
-
-
-
-
-
 
                 ctx.SaveChanges();
                 lblMessage.Text = "Order successfully saved";
 
+                ClearForm();
 
-
+                Session.Remove("CurrentOrder");
 
             }
+        }
+
+        private void ClearForm()
+        {
+            txtAdvancePayment.Text = "";
+            txtCustomerName.Text = "";
+            txtDrivingLicenseNo.Text = "";
         }
 
         protected void lstCars_OnItemEditing(object sender, ListViewEditEventArgs e)
@@ -101,18 +103,37 @@ namespace RentACarWeb.App
             var carGuid = Guid.Parse(e.Keys["CarId"].ToString());
             var item = currentOrder.Single(x => x.CarId == carGuid);
 
+            var quantity = e.NewValues["Quantity"].ToString();
 
-            var Quantity = e.NewValues["Quantity"].ToString();
+            item.Quantity = int.Parse(quantity);
+            
+
+            var txtdaterange = (TextBox)lstCars.EditItem.FindControl("daterange");
+
+            string a = txtdaterange.Text;
+
+            var dateFrom = DateTime.ParseExact(a.Split('-')[0].Trim(), "MM/dd/yyyy h:mm tt", null);
+            var dateTo = DateTime.ParseExact(a.Split('-')[1].Trim(), "MM/dd/yyyy h:mm tt", null);
 
 
-            item.Quantity = int.Parse(Quantity);
+            item.RentDurationFrom = dateFrom;
+            item.RentDurationTo = dateTo;
+
+
+
+
 
             lstCars.EditIndex = -1;
             lstCars.DataSource = currentOrder;
             lstCars.DataBind();
-            //lstCars.DataSource = currentOrder;
-            //lstCars.DataBind();
         }
 
+        protected void lstCars_OnItemCanceling(object sender, ListViewCancelEventArgs e)
+        {
+            var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+            lstCars.EditIndex = -1;
+            lstCars.DataSource = currentOrder;
+            lstCars.DataBind();
+        }
     }
 }

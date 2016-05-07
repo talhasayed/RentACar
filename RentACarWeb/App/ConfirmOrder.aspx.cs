@@ -37,10 +37,6 @@ namespace RentACarWeb.App
 
             }
         }
-
-        protected void btnSubmitOrder_OnClick(object sender, EventArgs e)
-        {
-            //todo: add the order to the database
-        }
+        
     }
 }

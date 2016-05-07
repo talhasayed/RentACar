@@ -22,6 +22,15 @@ namespace RentACarWeb.App {
         protected global::System.Web.UI.WebControls.Label lblMessage;
         
         /// <summary>
+        /// lnkFinalizeOrdertop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkFinalizeOrdertop;
+        
+        /// <summary>
         /// lstCars control.
         /// </summary>
         /// <remarks>
@@ -37,6 +46,6 @@ namespace RentACarWeb.App {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkFinalizeOrder;
+        protected global::System.Web.UI.WebControls.LinkButton lnkFinalizeOrder;
     }
 }
