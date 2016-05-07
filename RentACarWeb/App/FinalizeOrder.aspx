@@ -307,6 +307,9 @@
             <ItemSeparatorTemplate>
                 <hr style="margin: 5px;" />
             </ItemSeparatorTemplate>
+            <EmptyDataTemplate>
+                <span class="isa_warning" style="font-size: 16px; font-weight: bold;">No cars seleted. Please select atleast one car from the search page</span>
+            </EmptyDataTemplate>
         </asp:ListView>
 
     </div>

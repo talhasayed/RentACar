@@ -46,6 +46,10 @@ namespace RentACarWeb.App
             {
                 lblMessage.Text = "No cars selected. Please select cars on the search page.";
                 lblMessage.CssClass = "isa_error";
+
+                // Binding to show the empty data template
+                lstCars.DataSource = null;
+                lstCars.DataBind();
                 return;
             }
 
@@ -55,6 +59,10 @@ namespace RentACarWeb.App
             {
                 lblMessage.Text = "No cars selected. Please select cars on the search page.";
                 lblMessage.CssClass = "isa_error";
+
+                // Binding to show the empty data template
+                lstCars.DataSource = null;
+                lstCars.DataBind();
                 return;
             }
 
@@ -69,9 +77,19 @@ namespace RentACarWeb.App
                 return;
             }
 
+
             using (var ctx = new RentalDBContext())
             {
                 var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+
+
+                if (currentOrder == null || currentOrder.Count < 1)
+                {
+                    lblMessage.Text = "No cars selected. Please select cars on the search page.";
+                    lblMessage.CssClass = "isa_error";
+                    return;
+                }
+
                 var order = new RentOrder()
                 {
                     Id = Guid.NewGuid(),
@@ -112,12 +130,16 @@ namespace RentACarWeb.App
             txtAdvancePayment.Text = "";
             txtCustomerName.Text = "";
             txtDrivingLicenseNo.Text = "";
+            txtTransactionDate.Text = "";
+            ddlCountries.SelectedIndex = 0;
+
+            LoadInformation();
         }
 
         protected void lstCars_OnItemEditing(object sender, ListViewEditEventArgs e)
         {
             var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
-            
+
             lstCars.EditIndex = e.NewEditIndex;
             lstCars.DataSource = currentOrder;
             lstCars.DataBind();
@@ -134,7 +156,7 @@ namespace RentACarWeb.App
 
             item.Quantity = int.Parse(quantity);
 
-            
+
             var txtdaterange = (TextBox)lstCars.EditItem.FindControl("daterange");
 
             string a = txtdaterange.Text;
@@ -175,6 +197,6 @@ namespace RentACarWeb.App
             lstCars.DataBind();
         }
 
-        
+
     }
 }
