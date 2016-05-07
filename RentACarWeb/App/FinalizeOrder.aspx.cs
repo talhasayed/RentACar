@@ -14,14 +14,13 @@ namespace RentACarWeb.App
         {
             if (!Page.IsPostBack)
             {
-
                 if (!(Session["CurrentOrder"] is List<RentOrderDetail>))
                 {
                     lblMessage.Text = "No cars selected. Please select cars on the search page.";
                     return;
                 }
 
-                var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+                var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
 
                 if (currentOrder.Count == 0)
                 {
@@ -76,7 +75,6 @@ namespace RentACarWeb.App
                 ClearForm();
 
                 Session.Remove("CurrentOrder");
-
             }
         }
 
@@ -89,7 +87,7 @@ namespace RentACarWeb.App
 
         protected void lstCars_OnItemEditing(object sender, ListViewEditEventArgs e)
         {
-            var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+            var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
 
             lstCars.EditIndex = e.NewEditIndex;
             lstCars.DataSource = currentOrder;
@@ -98,7 +96,7 @@ namespace RentACarWeb.App
 
         protected void lstCars_OnItemUpdating(object sender, ListViewUpdateEventArgs e)
         {
-            var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+            var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
 
             var carGuid = Guid.Parse(e.Keys["CarId"].ToString());
             var item = currentOrder.Single(x => x.CarId == carGuid);
@@ -106,9 +104,9 @@ namespace RentACarWeb.App
             var quantity = e.NewValues["Quantity"].ToString();
 
             item.Quantity = int.Parse(quantity);
-            
 
-            var txtdaterange = (TextBox)lstCars.EditItem.FindControl("daterange");
+
+            var txtdaterange = (TextBox) lstCars.EditItem.FindControl("daterange");
 
             string a = txtdaterange.Text;
 
@@ -120,9 +118,6 @@ namespace RentACarWeb.App
             item.RentDurationTo = dateTo;
 
 
-
-
-
             lstCars.EditIndex = -1;
             lstCars.DataSource = currentOrder;
             lstCars.DataBind();
@@ -130,8 +125,23 @@ namespace RentACarWeb.App
 
         protected void lstCars_OnItemCanceling(object sender, ListViewCancelEventArgs e)
         {
-            var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+            var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
             lstCars.EditIndex = -1;
+            lstCars.DataSource = currentOrder;
+            lstCars.DataBind();
+        }
+
+        protected void lstCars_OnItemDeleting(object sender, ListViewDeleteEventArgs e)
+        {
+            var carId = Guid.Parse(e.Keys[0].ToString());
+
+            var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
+
+
+            var carItem = currentOrder.Single(x => x.CarId == carId);
+
+            currentOrder.Remove(carItem);
+
             lstCars.DataSource = currentOrder;
             lstCars.DataBind();
         }

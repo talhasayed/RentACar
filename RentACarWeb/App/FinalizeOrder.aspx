@@ -95,7 +95,7 @@
 
     <div class="searh-container">
 
-        <asp:ListView ID="lstCars" runat="server" OnItemEditing="lstCars_OnItemEditing" OnItemUpdating="lstCars_OnItemUpdating" OnItemCanceling="lstCars_OnItemCanceling" DataKeyNames="CarId">
+        <asp:ListView ID="lstCars" runat="server" OnItemEditing="lstCars_OnItemEditing" OnItemUpdating="lstCars_OnItemUpdating" OnItemDeleting="lstCars_OnItemDeleting" OnItemCanceling="lstCars_OnItemCanceling" DataKeyNames="CarId">
             <ItemTemplate>
 
                 <div id="itemdiv" runat="server" class="search-item">
@@ -159,6 +159,7 @@
                     </table>
 
                     <asp:LinkButton ID="EditButton" CssClass="btn btn-success btn-sm" runat="server" CommandName="Edit" Text="Edit" CommandArgument='<%# Eval("CarId") %>' />
+                    <asp:LinkButton ID="DeleteButton" CssClass="btn btn-danger btn-sm" runat="server" CommandName="Delete" Text="Delete" CommandArgument='<%# Eval("CarId") %>' />
 
                 </div>
             </ItemTemplate>
