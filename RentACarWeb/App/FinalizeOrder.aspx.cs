@@ -14,23 +14,44 @@ namespace RentACarWeb.App
         {
             if (!Page.IsPostBack)
             {
-                if (!(Session["CurrentOrder"] is List<RentOrderDetail>))
-                {
-                    lblMessage.Text = "No cars selected. Please select cars on the search page.";
-                    return;
-                }
-
-                var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
-
-                if (currentOrder.Count == 0)
-                {
-                    lblMessage.Text = "No cars selected. Please select cars on the search page.";
-                    return;
-                }
-
-                lstCars.DataSource = currentOrder;
-                lstCars.DataBind();
+                LoadInformation();
             }
+        }
+
+        private void LoadInformation()
+        {
+            if (!(Session["CurrentOrder"] is List<RentOrderDetail>))
+            {
+                lblMessage.Text = "No cars selected. Please select cars on the search page.";
+                return;
+            }
+
+            var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+
+            if (currentOrder.Count == 0)
+            {
+                lblMessage.Text = "No cars selected. Please select cars on the search page.";
+                return;
+            }
+
+            lstCars.DataSource = currentOrder;
+            lstCars.DataBind();
+
+
+            //Load Country Drop Down List
+
+            using (var ctx = new RentalDBContext())
+            {
+                var countries = ctx.Countries.ToList();
+
+                ddlCountries.DataSource = countries;
+                ddlCountries.DataTextField = "CountRYName";
+                ddlCountries.DataValueField = "ISO2";
+                ddlCountries.DataBind();
+            }
+
+
+
         }
 
         protected void btnConfirmOrder_OnClick(object sender, EventArgs e)

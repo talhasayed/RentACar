@@ -59,6 +59,15 @@
             </td>
         </tr>
         <tr>
+            <td>Nationality
+            </td>
+            <td>
+                <asp:DropDownList ID="ddlCountries" runat="server" AppendDataBoundItems="True">
+                    <asp:ListItem Text="Select Country" Value="-1"></asp:ListItem>
+                </asp:DropDownList>
+            </td>
+        </tr>
+        <tr>
             <td>Driving License No.
             </td>
             <td>

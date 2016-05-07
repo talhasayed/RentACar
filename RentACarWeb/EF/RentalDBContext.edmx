@@ -5,6 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="RentACarWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="ISO2" Type="char" MaxLength="2" />
+          <Property Name="CountryName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="LongCountryName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="ISO3" Type="char" MaxLength="3" />
+          <Property Name="NumCode" Type="varchar" MaxLength="6" />
+          <Property Name="UNMemberState" Type="varchar" MaxLength="12" />
+          <Property Name="CallingCode" Type="varchar" MaxLength="8" />
+          <Property Name="CCTLD" Type="varchar" MaxLength="5" />
+          <Property Name="InternationalRegion" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Cars">
           <Key>
             <PropertyRef Name="Id" />
@@ -65,6 +80,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="RentACarWebModelStoreContainer">
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cars" EntityType="Self.Cars" Schema="Rental" store:Type="Tables" />
           <EntitySet Name="RentOrder" EntityType="Self.RentOrder" Schema="Rental" store:Type="Tables" />
           <EntitySet Name="RentOrderDetail" EntityType="Self.RentOrderDetail" Schema="Rental" store:Type="Tables" />
@@ -93,6 +109,7 @@
             <End Role="Car" EntitySet="Cars" />
             <End Role="RentOrderDetail" EntitySet="RentOrderDetails" />
           </AssociationSet>
+          <EntitySet Name="Countries" EntityType="RentACarWebModel.Country" />
         </EntityContainer>
         <EntityType Name="RentOrder">
           <Key>
@@ -157,6 +174,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="ISO2" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="LongCountryName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="ISO3" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="NumCode" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="UNMemberState" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="CallingCode" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CCTLD" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="InternationalRegion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -198,6 +230,22 @@
                 <ScalarProperty Name="ModelName" ColumnName="ModelName" />
                 <ScalarProperty Name="BrandName" ColumnName="BrandName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="RentACarWebModel.Country">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="InternationalRegion" ColumnName="InternationalRegion" />
+                <ScalarProperty Name="CCTLD" ColumnName="CCTLD" />
+                <ScalarProperty Name="CallingCode" ColumnName="CallingCode" />
+                <ScalarProperty Name="UNMemberState" ColumnName="UNMemberState" />
+                <ScalarProperty Name="NumCode" ColumnName="NumCode" />
+                <ScalarProperty Name="ISO3" ColumnName="ISO3" />
+                <ScalarProperty Name="LongCountryName" ColumnName="LongCountryName" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="ISO2" ColumnName="ISO2" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

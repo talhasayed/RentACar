@@ -10,6 +10,7 @@
         <AssociationConnector Association="RentACarWebModel.FK_RentOrderDetail_RentOrder" />
         <EntityTypeShape EntityType="RentACarWebModel.Car" Width="1.5" PointX="3.375" PointY="5" />
         <AssociationConnector Association="RentACarWebModel.FK_RentOrderDetail_Cars" />
+        <EntityTypeShape EntityType="RentACarWebModel.Country" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

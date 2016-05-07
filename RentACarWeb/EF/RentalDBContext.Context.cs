@@ -28,5 +28,6 @@ namespace RentACarWeb.EF
         public virtual DbSet<RentOrder> RentOrders { get; set; }
         public virtual DbSet<RentOrderDetail> RentOrderDetails { get; set; }
         public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
     }
 }

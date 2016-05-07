@@ -376,6 +376,9 @@
     <Compile Include="EF\Car.cs">
       <DependentUpon>RentalDBContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\Country.cs">
+      <DependentUpon>RentalDBContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\RentalDBContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
