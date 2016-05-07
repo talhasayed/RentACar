@@ -21,7 +21,7 @@ namespace RentACarWeb.EF
         public System.DateTime RentDurationFrom { get; set; }
         public System.DateTime RentDurationTo { get; set; }
     
-        public virtual RentOrder RentOrder { get; set; }
         public virtual Car Car { get; set; }
+        public virtual RentOrder RentOrder { get; set; }
     }
 }

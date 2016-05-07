@@ -12,24 +12,18 @@ namespace RentACarWeb.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class RentOrder
+    public partial class Currency
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RentOrder()
+        public Currency()
         {
-            this.RentOrderDetails = new HashSet<RentOrderDetail>();
+            this.RentOrders = new HashSet<RentOrder>();
         }
     
-        public System.Guid Id { get; set; }
-        public System.DateTime TransactionDate { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerNationality { get; set; }
-        public string CustomerDrivingLicenseNo { get; set; }
-        public string PreferredCurrency { get; set; }
-        public decimal AdvancePayment { get; set; }
+        public string Id { get; set; }
+        public string CurrencyName { get; set; }
     
-        public virtual Currency Currency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RentOrderDetail> RentOrderDetails { get; set; }
+        public virtual ICollection<RentOrder> RentOrders { get; set; }
     }
 }

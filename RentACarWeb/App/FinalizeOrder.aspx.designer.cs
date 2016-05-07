@@ -22,6 +22,15 @@ namespace RentACarWeb.App {
         protected global::System.Web.UI.WebControls.Label lblMessage;
         
         /// <summary>
+        /// txtTransactionDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTransactionDate;
+        
+        /// <summary>
         /// txtCustomerName control.
         /// </summary>
         /// <remarks>
@@ -47,6 +56,15 @@ namespace RentACarWeb.App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDrivingLicenseNo;
+        
+        /// <summary>
+        /// ddlCurrencies control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCurrencies;
         
         /// <summary>
         /// txtAdvancePayment control.

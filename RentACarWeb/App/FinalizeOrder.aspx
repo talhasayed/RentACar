@@ -52,6 +52,20 @@
 
     <table class="tbl-finalize">
         <tr>
+            <td>Transaction Date
+            </td>
+            <td>
+                <asp:TextBox ID="txtTransactionDate" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:TextBox>
+                
+                <script>
+                    $(function() {
+                        $("#txtTransactionDate").datepicker({ dateFormat: 'dd/mm/yy' });
+                    });
+                </script>
+
+            </td>
+        </tr>
+        <tr>
             <td>Full Name
             </td>
             <td>
@@ -72,6 +86,13 @@
             </td>
             <td>
                 <asp:TextBox ID="txtDrivingLicenseNo" CssClass="form-control" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td>Preferred Currency
+            </td>
+            <td>
+                <asp:DropDownList ID="ddlCurrencies" runat="server"></asp:DropDownList>
             </td>
         </tr>
         <tr>

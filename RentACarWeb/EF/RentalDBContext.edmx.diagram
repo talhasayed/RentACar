@@ -5,12 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c872d65e8d9a458885f0ae272629e357" Name="Diagram1">
-        <EntityTypeShape EntityType="RentACarWebModel.RentOrder" Width="1.5" PointX="0.75" PointY="5" />
-        <EntityTypeShape EntityType="RentACarWebModel.RentOrderDetail" Width="1.5" PointX="3" PointY="1" />
-        <AssociationConnector Association="RentACarWebModel.FK_RentOrderDetail_RentOrder" />
-        <EntityTypeShape EntityType="RentACarWebModel.Car" Width="1.5" PointX="3.375" PointY="5" />
+        <EntityTypeShape EntityType="RentACarWebModel.Country" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="RentACarWebModel.Currency" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="RentACarWebModel.Car" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="RentACarWebModel.RentOrder" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="RentACarWebModel.RentOrderDetail" Width="1.5" PointX="5.25" PointY="1" />
+        <AssociationConnector Association="RentACarWebModel.FK_RentOrder_Currencies" />
         <AssociationConnector Association="RentACarWebModel.FK_RentOrderDetail_Cars" />
-        <EntityTypeShape EntityType="RentACarWebModel.Country" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="RentACarWebModel.FK_RentOrderDetail_RentOrder" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

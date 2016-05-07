@@ -102,6 +102,7 @@ namespace RentACarWeb.App
             if (errorNoCarSelected)
             {
                 lblMessage.Text = "No car selected. Please select atleast one car to finalize your order.";
+                lblMessage.CssClass = "isa_error";
             }
             else
             {

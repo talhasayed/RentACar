@@ -20,6 +20,13 @@
           <Property Name="CCTLD" Type="varchar" MaxLength="5" />
           <Property Name="InternationalRegion" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Currencies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="CurrencyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Cars">
           <Key>
             <PropertyRef Name="Id" />
@@ -41,8 +48,8 @@
           <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CustomerNationality" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="CustomerDrivingLicenseNo" Type="nchar" MaxLength="20" Nullable="false" />
-          <Property Name="PreferredCurrency" Type="int" />
-          <Property Name="AdvancePayment" Type="nchar" MaxLength="10" />
+          <Property Name="PreferredCurrency" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="AdvancePayment" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="RentOrderDetail">
           <Key>
@@ -55,6 +62,18 @@
           <Property Name="RentDurationFrom" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="RentDurationTo" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
+        <Association Name="FK_RentOrder_Currencies">
+          <End Role="Currencies" Type="Self.Currencies" Multiplicity="1" />
+          <End Role="RentOrder" Type="Self.RentOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currencies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentOrder">
+              <PropertyRef Name="PreferredCurrency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RentOrderDetail_Cars">
           <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
           <End Role="RentOrderDetail" Type="Self.RentOrderDetail" Multiplicity="*" />
@@ -81,9 +100,14 @@
         </Association>
         <EntityContainer Name="RentACarWebModelStoreContainer">
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Currencies" EntityType="Self.Currencies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cars" EntityType="Self.Cars" Schema="Rental" store:Type="Tables" />
           <EntitySet Name="RentOrder" EntityType="Self.RentOrder" Schema="Rental" store:Type="Tables" />
           <EntitySet Name="RentOrderDetail" EntityType="Self.RentOrderDetail" Schema="Rental" store:Type="Tables" />
+          <AssociationSet Name="FK_RentOrder_Currencies" Association="Self.FK_RentOrder_Currencies">
+            <End Role="Currencies" EntitySet="Currencies" />
+            <End Role="RentOrder" EntitySet="RentOrder" />
+          </AssociationSet>
           <AssociationSet Name="FK_RentOrderDetail_Cars" Association="Self.FK_RentOrderDetail_Cars">
             <End Role="Cars" EntitySet="Cars" />
             <End Role="RentOrderDetail" EntitySet="RentOrderDetail" />
@@ -98,82 +122,24 @@
     <edmx:ConceptualModels>
       <Schema Namespace="RentACarWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RentalDBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Countries" EntityType="RentACarWebModel.Country" />
+          <EntitySet Name="Currencies" EntityType="RentACarWebModel.Currency" />
+          <EntitySet Name="Cars" EntityType="RentACarWebModel.Car" />
           <EntitySet Name="RentOrders" EntityType="RentACarWebModel.RentOrder" />
           <EntitySet Name="RentOrderDetails" EntityType="RentACarWebModel.RentOrderDetail" />
-          <AssociationSet Name="FK_RentOrderDetail_RentOrder" Association="RentACarWebModel.FK_RentOrderDetail_RentOrder">
+          <AssociationSet Name="FK_RentOrder_Currencies" Association="RentACarWebModel.FK_RentOrder_Currencies">
+            <End Role="Currency" EntitySet="Currencies" />
             <End Role="RentOrder" EntitySet="RentOrders" />
-            <End Role="RentOrderDetail" EntitySet="RentOrderDetails" />
           </AssociationSet>
-          <EntitySet Name="Cars" EntityType="RentACarWebModel.Car" />
           <AssociationSet Name="FK_RentOrderDetail_Cars" Association="RentACarWebModel.FK_RentOrderDetail_Cars">
             <End Role="Car" EntitySet="Cars" />
             <End Role="RentOrderDetail" EntitySet="RentOrderDetails" />
           </AssociationSet>
-          <EntitySet Name="Countries" EntityType="RentACarWebModel.Country" />
+          <AssociationSet Name="FK_RentOrderDetail_RentOrder" Association="RentACarWebModel.FK_RentOrderDetail_RentOrder">
+            <End Role="RentOrder" EntitySet="RentOrders" />
+            <End Role="RentOrderDetail" EntitySet="RentOrderDetails" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="RentOrder">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerNationality" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="CustomerDrivingLicenseNo" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="PreferredCurrency" Type="Int32" />
-          <Property Name="AdvancePayment" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="RentOrderDetails" Relationship="RentACarWebModel.FK_RentOrderDetail_RentOrder" FromRole="RentOrder" ToRole="RentOrderDetail" />
-        </EntityType>
-        <EntityType Name="RentOrderDetail">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="RentOrderId" Type="Guid" Nullable="false" />
-          <Property Name="CarId" Type="Guid" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="RentDurationFrom" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="RentDurationTo" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="RentOrder" Relationship="RentACarWebModel.FK_RentOrderDetail_RentOrder" FromRole="RentOrderDetail" ToRole="RentOrder" />
-          <NavigationProperty Name="Car" Relationship="RentACarWebModel.FK_RentOrderDetail_Cars" FromRole="RentOrderDetail" ToRole="Car" />
-        </EntityType>
-        <Association Name="FK_RentOrderDetail_RentOrder">
-          <End Type="RentACarWebModel.RentOrder" Role="RentOrder" Multiplicity="1" />
-          <End Type="RentACarWebModel.RentOrderDetail" Role="RentOrderDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RentOrder">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RentOrderDetail">
-              <PropertyRef Name="RentOrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Car">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ModelName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CarType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ModelYear" Type="Int32" Nullable="false" />
-          <Property Name="PersonCapacity" Type="Int32" Nullable="false" />
-          <Property Name="Color" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="RentOrderDetails" Relationship="RentACarWebModel.FK_RentOrderDetail_Cars" FromRole="Car" ToRole="RentOrderDetail" />
-        </EntityType>
-        <Association Name="FK_RentOrderDetail_Cars">
-          <End Type="RentACarWebModel.Car" Role="Car" Multiplicity="1" />
-          <End Type="RentACarWebModel.RentOrderDetail" Role="RentOrderDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Car">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="RentOrderDetail">
-              <PropertyRef Name="CarId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="CountryID" />
@@ -189,12 +155,133 @@
           <Property Name="CCTLD" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="InternationalRegion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-      </Schema>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="CurrencyName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RentOrders" Relationship="RentACarWebModel.FK_RentOrder_Currencies" FromRole="Currency" ToRole="RentOrder" />
+        </EntityType>
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModelName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CarType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ModelYear" Type="Int32" Nullable="false" />
+          <Property Name="PersonCapacity" Type="Int32" Nullable="false" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RentOrderDetails" Relationship="RentACarWebModel.FK_RentOrderDetail_Cars" FromRole="Car" ToRole="RentOrderDetail" />
+        </EntityType>
+        <EntityType Name="RentOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerNationality" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="CustomerDrivingLicenseNo" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="PreferredCurrency" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="AdvancePayment" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="Currency" Relationship="RentACarWebModel.FK_RentOrder_Currencies" FromRole="RentOrder" ToRole="Currency" />
+          <NavigationProperty Name="RentOrderDetails" Relationship="RentACarWebModel.FK_RentOrderDetail_RentOrder" FromRole="RentOrder" ToRole="RentOrderDetail" />
+        </EntityType>
+        <EntityType Name="RentOrderDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="RentOrderId" Type="Guid" Nullable="false" />
+          <Property Name="CarId" Type="Guid" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="RentDurationFrom" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="RentDurationTo" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Car" Relationship="RentACarWebModel.FK_RentOrderDetail_Cars" FromRole="RentOrderDetail" ToRole="Car" />
+          <NavigationProperty Name="RentOrder" Relationship="RentACarWebModel.FK_RentOrderDetail_RentOrder" FromRole="RentOrderDetail" ToRole="RentOrder" />
+        </EntityType>
+        <Association Name="FK_RentOrder_Currencies">
+          <End Type="RentACarWebModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="RentACarWebModel.RentOrder" Role="RentOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentOrder">
+              <PropertyRef Name="PreferredCurrency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RentOrderDetail_Cars">
+          <End Type="RentACarWebModel.Car" Role="Car" Multiplicity="1" />
+          <End Type="RentACarWebModel.RentOrderDetail" Role="RentOrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentOrderDetail">
+              <PropertyRef Name="CarId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RentOrderDetail_RentOrder">
+          <End Type="RentACarWebModel.RentOrder" Role="RentOrder" Multiplicity="1" />
+          <End Type="RentACarWebModel.RentOrderDetail" Role="RentOrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentOrder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentOrderDetail">
+              <PropertyRef Name="RentOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RentACarWebModelStoreContainer" CdmEntityContainer="RentalDBContext">
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="RentACarWebModel.Country">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="InternationalRegion" ColumnName="InternationalRegion" />
+                <ScalarProperty Name="CCTLD" ColumnName="CCTLD" />
+                <ScalarProperty Name="CallingCode" ColumnName="CallingCode" />
+                <ScalarProperty Name="UNMemberState" ColumnName="UNMemberState" />
+                <ScalarProperty Name="NumCode" ColumnName="NumCode" />
+                <ScalarProperty Name="ISO3" ColumnName="ISO3" />
+                <ScalarProperty Name="LongCountryName" ColumnName="LongCountryName" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="ISO2" ColumnName="ISO2" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currencies">
+            <EntityTypeMapping TypeName="RentACarWebModel.Currency">
+              <MappingFragment StoreEntitySet="Currencies">
+                <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="RentACarWebModel.Car">
+              <MappingFragment StoreEntitySet="Cars">
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="PersonCapacity" ColumnName="PersonCapacity" />
+                <ScalarProperty Name="ModelYear" ColumnName="ModelYear" />
+                <ScalarProperty Name="CarType" ColumnName="CarType" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RentOrders">
             <EntityTypeMapping TypeName="RentACarWebModel.RentOrder">
               <MappingFragment StoreEntitySet="RentOrder">
@@ -217,35 +304,6 @@
                 <ScalarProperty Name="CarId" ColumnName="CarId" />
                 <ScalarProperty Name="RentOrderId" ColumnName="RentOrderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cars">
-            <EntityTypeMapping TypeName="RentACarWebModel.Car">
-              <MappingFragment StoreEntitySet="Cars">
-                <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="PersonCapacity" ColumnName="PersonCapacity" />
-                <ScalarProperty Name="ModelYear" ColumnName="ModelYear" />
-                <ScalarProperty Name="CarType" ColumnName="CarType" />
-                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
-                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Countries">
-            <EntityTypeMapping TypeName="RentACarWebModel.Country">
-              <MappingFragment StoreEntitySet="Countries">
-                <ScalarProperty Name="InternationalRegion" ColumnName="InternationalRegion" />
-                <ScalarProperty Name="CCTLD" ColumnName="CCTLD" />
-                <ScalarProperty Name="CallingCode" ColumnName="CallingCode" />
-                <ScalarProperty Name="UNMemberState" ColumnName="UNMemberState" />
-                <ScalarProperty Name="NumCode" ColumnName="NumCode" />
-                <ScalarProperty Name="ISO3" ColumnName="ISO3" />
-                <ScalarProperty Name="LongCountryName" ColumnName="LongCountryName" />
-                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
-                <ScalarProperty Name="ISO2" ColumnName="ISO2" />
-                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

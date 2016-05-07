@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -20,38 +21,45 @@ namespace RentACarWeb.App
 
         private void LoadInformation()
         {
+            using (var ctx = new RentalDBContext())
+            {
+                //Load Country Drop Down List
+
+                var countries = ctx.Countries.ToList();
+
+                ddlCountries.DataSource = countries;
+                ddlCountries.DataTextField = "CountryName";
+                ddlCountries.DataValueField = "ISO2";
+                ddlCountries.DataBind();
+
+                //Load Currency List
+                var currencies = ctx.Currencies.ToList();
+
+                ddlCurrencies.DataSource = currencies;
+                ddlCurrencies.DataTextField = "CurrencyName";
+                ddlCurrencies.DataValueField = "Id";
+                ddlCurrencies.DataBind();
+            }
+
+
             if (!(Session["CurrentOrder"] is List<RentOrderDetail>))
             {
                 lblMessage.Text = "No cars selected. Please select cars on the search page.";
+                lblMessage.CssClass = "isa_error";
                 return;
             }
 
-            var currentOrder = (List<RentOrderDetail>)Session["CurrentOrder"];
+            var currentOrder = (List<RentOrderDetail>) Session["CurrentOrder"];
 
             if (currentOrder.Count == 0)
             {
                 lblMessage.Text = "No cars selected. Please select cars on the search page.";
+                lblMessage.CssClass = "isa_error";
                 return;
             }
 
             lstCars.DataSource = currentOrder;
             lstCars.DataBind();
-
-
-            //Load Country Drop Down List
-
-            using (var ctx = new RentalDBContext())
-            {
-                var countries = ctx.Countries.ToList();
-
-                ddlCountries.DataSource = countries;
-                ddlCountries.DataTextField = "CountRYName";
-                ddlCountries.DataValueField = "ISO2";
-                ddlCountries.DataBind();
-            }
-
-
-
         }
 
         protected void btnConfirmOrder_OnClick(object sender, EventArgs e)
@@ -67,12 +75,12 @@ namespace RentACarWeb.App
                 var order = new RentOrder()
                 {
                     Id = Guid.NewGuid(),
-                    CustomerName = "",
-                    CustomerNationality = "",
-                    PreferredCurrency = 0,
-                    CustomerDrivingLicenseNo = "",
-                    AdvancePayment = "",
-                    TransactionDate = DateTime.Now,
+                    CustomerName = txtCustomerName.Text.Trim(),
+                    CustomerNationality = ddlCountries.SelectedValue,
+                    PreferredCurrency = ddlCurrencies.SelectedValue,
+                    CustomerDrivingLicenseNo = txtDrivingLicenseNo.Text.Trim(),
+                    AdvancePayment = decimal.Parse(txtAdvancePayment.Text.Trim()),
+                    TransactionDate = DateTime.ParseExact(txtTransactionDate.Text.Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                 };
 
 
