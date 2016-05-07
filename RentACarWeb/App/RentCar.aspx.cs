@@ -46,7 +46,9 @@ namespace RentACarWeb.App
                     {
                         CarId = currentCarId,
                         Car = ctx.Cars.Single(x => x.Id == currentCarId),
-                        Quantity = 1
+                        Quantity = 1,
+                        RentDurationFrom = DateTime.Today.AddDays(3),
+                        RentDurationTo = DateTime.Today.AddDays(10)
                     });
 
                     //lblMessage.Text = string.Format("Car with Id:{0} was added to the order", currentCarId);

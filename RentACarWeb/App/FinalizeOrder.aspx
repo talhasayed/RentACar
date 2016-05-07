@@ -15,9 +15,9 @@
         }
 
 
-            .search-item table tr td:nth-child(2n + 1) {
-                font-weight: bold;
-            }
+        .search-item table tr td:nth-child(2n + 1) {
+            font-weight: bold;
+        }
 
 
 
@@ -35,6 +35,18 @@
             width: 350px;
         }
 
+        .valItem {
+            color: red;
+            font-weight: bold;
+            display: block;
+            float: left;
+        }
+
+        .valSummary {
+            color: red;
+
+        }
+
     </style>
 
 
@@ -50,6 +62,8 @@
     <br />
     <br />
 
+    <%--<asp:ValidationSummary CssClass="valSummary" ID="ValidationSummary1" runat="server" />--%>
+
     <table class="tbl-finalize">
         <tr>
             <td>Transaction Date
@@ -64,6 +78,9 @@
                 </script>
 
             </td>
+            <td>
+                <asp:RequiredFieldValidator CssClass="valItem" ID="rfv5" runat="server" ErrorMessage="Please enter the transaction date"  ControlToValidate="txtTransactionDate"></asp:RequiredFieldValidator>
+            </td>
         </tr>
         <tr>
             <td>Full Name
@@ -71,14 +88,33 @@
             <td>
                 <asp:TextBox ID="txtCustomerName" CssClass="form-control" runat="server"></asp:TextBox>
             </td>
+            <td>
+                <asp:RequiredFieldValidator CssClass="valItem" ID="rfv1" runat="server" ErrorMessage="Please enter the customer name" ControlToValidate="txtCustomerName"></asp:RequiredFieldValidator>
+            </td>
         </tr>
         <tr>
             <td>Nationality
             </td>
             <td>
-                <asp:DropDownList ID="ddlCountries" runat="server" AppendDataBoundItems="True">
+                <asp:DropDownList ID="ddlCountries" ClientIDMode="Static" runat="server" Width="280px" AppendDataBoundItems="True">
                     <asp:ListItem Text="Select Country" Value="-1"></asp:ListItem>
                 </asp:DropDownList>
+                
+                <script>
+                    $(function() {
+                        $("#ddlCountries").selectmenu();
+
+                    });
+                </script>
+                <style>
+                    #ddlCountries-menu {
+                        height: 200px;
+                    }
+                </style>
+
+            </td>
+            <td>
+                <asp:RequiredFieldValidator CssClass="valItem" ID="rfv4" runat="server" ErrorMessage="Please select the nationality"  InitialValue="-1" ControlToValidate="ddlCountries"></asp:RequiredFieldValidator>
             </td>
         </tr>
         <tr>
@@ -87,12 +123,28 @@
             <td>
                 <asp:TextBox ID="txtDrivingLicenseNo" CssClass="form-control" runat="server"></asp:TextBox>
             </td>
+            <td>
+                <asp:RequiredFieldValidator CssClass="valItem" ID="rfv2" runat="server" ErrorMessage="Please enter the driving license number" ControlToValidate="txtDrivingLicenseNo"></asp:RequiredFieldValidator>
+            </td>
         </tr>
         <tr>
             <td>Preferred Currency
             </td>
             <td>
-                <asp:DropDownList ID="ddlCurrencies" runat="server"></asp:DropDownList>
+                <asp:DropDownList ID="ddlCurrencies" ClientIDMode="Static" runat="server"></asp:DropDownList>
+                
+                <script>
+                    $(function() {
+                        $("#ddlCurrencies").selectmenu({
+                            width: "280px"
+                    });
+                    });
+                </script>
+                <style>
+                    #ddlCurrencies-menu {
+                        max-height: 200px;
+                    }
+                </style>
             </td>
         </tr>
         <tr>
@@ -100,6 +152,9 @@
             </td>
             <td>
                 <asp:TextBox ID="txtAdvancePayment" CssClass="form-control" runat="server"></asp:TextBox>
+            </td>
+            <td>
+                <asp:RequiredFieldValidator CssClass="valItem" ID="rfv3" runat="server" ErrorMessage="Please enter the advance payment value" ControlToValidate="txtAdvancePayment"></asp:RequiredFieldValidator>
             </td>
         </tr>
     </table>
@@ -188,8 +243,8 @@
                         </tr>
                     </table>
 
-                    <asp:LinkButton ID="EditButton" CssClass="btn btn-success btn-sm" runat="server" CommandName="Edit" Text="Edit" CommandArgument='<%# Eval("CarId") %>' />
-                    <asp:LinkButton ID="DeleteButton" CssClass="btn btn-danger btn-sm" runat="server" CommandName="Delete" Text="Delete" CommandArgument='<%# Eval("CarId") %>' />
+                    <asp:LinkButton ID="EditButton" CssClass="btn btn-success btn-sm" runat="server" CommandName="Edit" Text="Edit" CommandArgument='<%# Eval("CarId") %>' CausesValidation="False" />
+                    <asp:LinkButton ID="DeleteButton" CssClass="btn btn-danger btn-sm" runat="server" CommandName="Delete" Text="Delete" CommandArgument='<%# Eval("CarId") %>' CausesValidation="False"/>
 
                 </div>
             </ItemTemplate>
@@ -218,7 +273,7 @@
                                 <span style="font-weight: bold">Duration:</span>
                             </td>
                             <td>
-                                <asp:TextBox ID="daterange" ClientIDMode="Static" CssClass="form-control" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="daterange" ClientIDMode="Static" CssClass="form-control" runat="server" Text='<%# Eval("RentDurationFrom", "{0: MM/dd/yyyy h:mm tt}") + " - " + Eval("RentDurationTo", "{0: MM/dd/yyyy h:mm tt}") %>'></asp:TextBox>
                             </td>
                         </tr>
 
@@ -245,8 +300,8 @@
 
                 </div>
 
-                <asp:LinkButton ID="UpdateButton" runat="server" CommandName="Update" Text="Update" CommandArgument='<%# Eval("CarId") %>' />
-                <asp:LinkButton ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" CausesValidation="False" />
+                <asp:LinkButton ID="UpdateButton" ValidationGroup="vg_details" CssClass="btn btn-success btn-sm" runat="server" CommandName="Update" Text="Update" CommandArgument='<%# Eval("CarId") %>' />
+                <asp:LinkButton ID="CancelButton" CssClass="btn btn-danger btn-sm" runat="server" CommandName="Cancel" Text="Cancel" CausesValidation="False" />
 
             </EditItemTemplate>
             <ItemSeparatorTemplate>
