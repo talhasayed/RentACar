@@ -156,7 +156,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\ConfirmOrder.aspx" />
     <Content Include="App\FinalizeOrder.aspx" />
     <Content Include="App\RentCar.aspx" />
     <Content Include="Content\bootstrap.css" />
@@ -264,13 +263,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App\ConfirmOrder.aspx.cs">
-      <DependentUpon>ConfirmOrder.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="App\ConfirmOrder.aspx.designer.cs">
-      <DependentUpon>ConfirmOrder.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App\FinalizeOrder.aspx.cs">
       <DependentUpon>FinalizeOrder.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
